@@ -11,7 +11,7 @@ interface ProductGalleryCarouselProps {
 }
 
 const DESKTOP_CARDS = 4;
-const AUTO_PLAY_MS = 3000;
+const AUTO_PLAY_MS = 5000;
 const CARD_IMAGE_SIZES = '(max-width: 768px) 100vw, (max-width: 1280px) 25vw, 20vw';
 
 function ProductCard({
@@ -62,18 +62,7 @@ function ProductCard({
               {product.description}
             </p>
           )}
-          {instructions.length > 0 && (
-            <ul className="flex flex-wrap justify-center gap-1" aria-label="আমের বৈশিষ্ট্য">
-              {instructions.map((instruction, index) => (
-                <li
-                  key={`${instruction}-${index}`}
-                  className="rounded-full bg-orange-50 px-2 py-0.5 text-[10px] font-medium text-orange-900"
-                >
-                  {instruction}
-                </li>
-              ))}
-            </ul>
-          )}
+          
           <div className="flex flex-wrap items-center justify-center gap-2">
             <span className="text-sm font-bold text-orange-700">{formatBdt(price)}</span>
             {product.discountPrice != null && (
