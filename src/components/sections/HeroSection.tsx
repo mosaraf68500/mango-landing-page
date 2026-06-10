@@ -12,30 +12,36 @@ import {
 
 export default function HeroSection(): React.JSX.Element {
   return (
-    <section className="relative min-h-[560px] overflow-hidden sm:min-h-[640px] lg:min-h-[720px]">
+    <header className="relative min-h-[560px] overflow-hidden sm:min-h-[640px] lg:min-h-[720px]">
       <Image
         src={HERO_BG_IMAGE}
-        alt="Premium mango hero background"
+        alt=""
         fill
         priority
-        className="object-cover "
-        sizes=""
+        className="object-cover"
+        sizes="100vw"
+        aria-hidden="true"
       />
 
-      {/* Left-side readability gradient — keeps background visible on the right */}
-      <div className="absolute inset-0 bg-gradient-to-r from-yellow-60/95 via-yellow-50/75 to-transparent" />
+      <div
+        className="absolute inset-0 bg-gradient-to-r from-yellow-60/95 via-yellow-50/75 to-transparent"
+        aria-hidden="true"
+      />
 
       <div className="relative z-10 mx-auto flex min-h-[560px] max-w-7xl flex-col justify-center gap-8 px-5 py-16 sm:min-h-[640px] sm:px-8 lg:min-h-[720px] lg:flex-row lg:items-center lg:gap-10 lg:px-12">
         <div className="w-full shrink-0 space-y-5 sm:space-y-6 lg:max-w-xl">
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-mango-green shadow-sm">
+            <div
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-mango-green shadow-sm"
+              aria-hidden="true"
+            >
               <span className="text-lg text-white">✓</span>
             </div>
             <div>
-              <p className="text-base font-bold leading-tight text-red-600 sm:text-lg">
+              <p className="text-base font-bold leading-tight text-red-700 sm:text-lg">
                 {HERO_SITE_NAME}
               </p>
-              <p className="text-xs font-medium text-slate-700 sm:text-sm">
+              <p className="text-xs font-medium text-slate-800 sm:text-sm">
                 {HERO_SITE_TAGLINE}
               </p>
             </div>
@@ -48,17 +54,16 @@ export default function HeroSection(): React.JSX.Element {
           <p className="text-base font-semibold leading-relaxed text-slate-900 sm:text-lg">
             {HERO_DESCRIPTION}
           </p>
-          <p className="text-sm font-bold text-slate-900 sm:text-base">
-            {HERO_GUARANTEE}
-          </p>
+          <p className="text-sm font-bold text-slate-900 sm:text-base">{HERO_GUARANTEE}</p>
 
           <div className="pt-1">
             <a
               href="#order"
-              className="inline-flex items-center gap-2 rounded-md border-2 border-white bg-mango-green-dark px-6 py-3 text-base font-bold text-white shadow-lg transition hover:bg-mango-green sm:px-7 sm:py-3.5"
+              className="inline-flex items-center gap-2 rounded-md border-2 border-white bg-mango-green-dark px-6 py-3 text-base font-bold text-white shadow-lg transition hover:bg-mango-green focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              aria-label="অর্ডার সেকশনে যান"
             >
               অর্ডার করতে চাই
-              <Pointer className="h-5 w-5" />
+              <Pointer className="h-5 w-5" aria-hidden="true" />
             </a>
           </div>
         </div>
@@ -70,23 +75,22 @@ export default function HeroSection(): React.JSX.Element {
               alt="গাছে পাকা আম"
               fill
               priority
-              className=" object-cover object-center"
+              className="object-cover object-center"
               sizes="(max-width: 1024px) 256px, 320px"
             />
           </div>
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 z-20 w-full leading-[0]">
+      <div className="absolute bottom-0 left-0 z-20 w-full leading-[0]" aria-hidden="true">
         <svg
           viewBox="0 0 1200 120"
           preserveAspectRatio="none"
           className="h-14 w-full fill-white sm:h-20"
-          aria-hidden="true"
         >
           <path d="M0,64 C300,120 900,0 1200,64 L1200,120 L0,120 Z" />
         </svg>
       </div>
-    </section>
+    </header>
   );
 }

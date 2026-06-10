@@ -1,17 +1,26 @@
 import type { Metadata } from 'next';
 import { Hind_Siliguri } from 'next/font/google';
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/site';
 import './globals.css';
 
 const hind = Hind_Siliguri({
   variable: '--font-hind',
   subsets: ['bengali', 'latin'],
   weight: ['400', '500', '600', '700'],
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
-  title: 'ফলের রাজা আম | Premium Mango Landing',
-  description:
-    '১০০% ফরমালিন মুক্ত প্রিমিয়াম আম — সরাসরি বাগান থেকে আপনার ঠিকানায়।',
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: SITE_NAME,
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  formatDetection: {
+    telephone: false,
+  },
 };
 
 export default function RootLayout({

@@ -14,9 +14,9 @@ export default function PackagingSection({
   const sampleUnitPrice =
     products.length > 0 ? getProductUnitPrice(products[0]) : 200;
   return (
-    <section id="packaging" className="bg-slate-50 px-4 py-10">
+    <section id="packaging" className="bg-slate-50 px-4 py-10" aria-labelledby="packaging-heading">
       <div className="mx-auto max-w-6xl space-y-6">
-        <SectionBanner>প্যাকেজিং — বেশি নিলে বেশি সেভ</SectionBanner>
+        <SectionBanner id="packaging-heading">প্যাকেজিং — বেশি নিলে বেশি সেভ</SectionBanner>
 
         <p className="text-center text-sm text-slate-600 sm:text-base">
           ৬, ১২, ২০ বা ২৫ কেজি প্যাকেজ নিলে দাম কমে যাবে। অর্ডার পেজে প্যাকেজ বেছে নিন।
@@ -49,7 +49,8 @@ export default function PackagingSection({
         <div className="flex justify-center">
           <Link
             href="#order"
-            className="rounded-lg bg-mango-green-dark px-6 py-3 text-sm font-bold text-white transition hover:bg-mango-green sm:text-base"
+            aria-label="প্যাকেজ সহ অর্ডার সেকশনে যান"
+            className="rounded-lg bg-mango-green-dark px-6 py-3 text-sm font-bold text-white transition hover:bg-mango-green focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mango-green sm:text-base"
           >
             প্যাকেজ সহ অর্ডার করুন
           </Link>

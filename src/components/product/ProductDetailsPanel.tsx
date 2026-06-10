@@ -50,6 +50,8 @@ export default function ProductDetailsPanel({
                   key={`${src}-${index}`}
                   type="button"
                   onClick={() => setActiveImage(src)}
+                  aria-label={`${product.title} — ছবি ${index + 1} দেখুন`}
+                  aria-pressed={activeImage === src}
                   className={`relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border-2 transition sm:h-20 sm:w-20 ${
                     activeImage === src
                       ? 'border-orange-500 ring-2 ring-orange-200'

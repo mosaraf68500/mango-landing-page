@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, type FormEvent } from 'react';
+import { useEffect, useState, useTransition, type FormEvent } from 'react';
 import Image from 'next/image';
 import { ChevronDown, Lock, Minus, Plus } from 'lucide-react';
 import { placeOrder } from '@/lib/api';
@@ -57,7 +57,7 @@ export default function CheckoutSection({
   });
   const [bkashAccount, setBkashAccount] = useState('');
   const [transactionId, setTransactionId] = useState('');
-  const [submitting, setSubmitting] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(
     null,
   );
@@ -96,61 +96,60 @@ export default function CheckoutSection({
     setSelectedPackageId(null);
   };
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!selectedProduct) {
       setMessage({ type: 'error', text: 'কোনো পণ্য নির্বাচন করা হয়নি।' });
       return;
     }
 
-    setSubmitting(true);
-    setMessage(null);
+    startTransition(async () => {
+      setMessage(null);
 
-    try {
-      const payloadPaymentMethod: 'manual_bkash' | 'gateway' = isGatewayMode
-        ? 'gateway'
-        : 'manual_bkash';
+      try {
+        const payloadPaymentMethod: 'manual_bkash' | 'gateway' = isGatewayMode
+          ? 'gateway'
+          : 'manual_bkash';
 
-      const payload: Parameters<typeof placeOrder>[0] = {
-        customerName: customer.customerName.trim(),
-        email: customer.email.trim(),
-        phone: customer.phone.trim(),
-        shippingAddress: customer.shippingAddress.trim(),
-        product: selectedProduct._id,
-        quantity: getOrderQuantity(quantity, selectedPackageId),
-        paymentMethod: payloadPaymentMethod,
-      };
+        const payload: Parameters<typeof placeOrder>[0] = {
+          customerName: customer.customerName.trim(),
+          email: customer.email.trim(),
+          phone: customer.phone.trim(),
+          shippingAddress: customer.shippingAddress.trim(),
+          product: selectedProduct._id,
+          quantity: getOrderQuantity(quantity, selectedPackageId),
+          paymentMethod: payloadPaymentMethod,
+        };
 
-      if (selectedPackageId) {
-        payload.packageId = selectedPackageId;
+        if (selectedPackageId) {
+          payload.packageId = selectedPackageId;
+        }
+
+        if (isGatewayMode) {
+          payload.gatewayTransactionId = `GW-PENDING-${Date.now()}`;
+        } else if (paymentOption === 'bkash') {
+          payload.bkashNumber = bkashAccount.trim();
+          payload.transactionId = transactionId.trim();
+        } else {
+          payload.bkashNumber = merchantBkash;
+          payload.transactionId = `COD-${Date.now()}`;
+        }
+
+        const response = await placeOrder(payload);
+        setMessage({
+          type: 'success',
+          text: response.message || 'অর্ডার সফলভাবে সম্পন্ন হয়েছে!',
+        });
+        setCustomer({ customerName: '', email: '', phone: '', shippingAddress: '' });
+        setBkashAccount('');
+        setTransactionId('');
+        setSelectedPackageId(null);
+      } catch (error) {
+        const text =
+          error instanceof Error ? error.message : 'অর্ডার সম্পন্ন করা যায়নি।';
+        setMessage({ type: 'error', text });
       }
-
-      if (isGatewayMode) {
-        payload.gatewayTransactionId = `GW-PENDING-${Date.now()}`;
-      } else if (paymentOption === 'bkash') {
-        payload.bkashNumber = bkashAccount.trim();
-        payload.transactionId = transactionId.trim();
-      } else {
-        payload.bkashNumber = merchantBkash;
-        payload.transactionId = `COD-${Date.now()}`;
-      }
-
-      const response = await placeOrder(payload);
-      setMessage({
-        type: 'success',
-        text: response.message || 'অর্ডার সফলভাবে সম্পন্ন হয়েছে!',
-      });
-      setCustomer({ customerName: '', email: '', phone: '', shippingAddress: '' });
-      setBkashAccount('');
-      setTransactionId('');
-      setSelectedPackageId(null);
-    } catch (error) {
-      const text =
-        error instanceof Error ? error.message : 'অর্ডার সম্পন্ন করা যায়নি।';
-      setMessage({ type: 'error', text });
-    } finally {
-      setSubmitting(false);
-    }
+    });
   };
 
   if (products.length === 0) {
@@ -406,11 +405,13 @@ export default function CheckoutSection({
 
             <button
               type="submit"
-              disabled={submitting}
-              className="flex w-full items-center justify-center gap-2 rounded-lg bg-orange-500 py-3.5 text-sm font-bold text-white transition hover:bg-orange-600 disabled:opacity-60 sm:text-base"
+              disabled={isPending}
+              aria-busy={isPending}
+              aria-label={isPending ? 'অর্ডার প্রক্রিয়াধীন' : `অর্ডার করুন ${formatBdt(total)}`}
+              className="flex w-full items-center justify-center gap-2 rounded-lg bg-orange-600 py-3.5 text-sm font-bold text-white transition hover:bg-orange-700 disabled:cursor-wait disabled:opacity-60 sm:text-base"
             >
-              <Lock className="h-4 w-4" />
-              {submitting ? 'অর্ডার হচ্ছে...' : `অর্ডার করুন ${formatBdt(total)}`}
+              <Lock className="h-4 w-4" aria-hidden="true" />
+              {isPending ? 'অর্ডার হচ্ছে...' : `অর্ডার করুন ${formatBdt(total)}`}
             </button>
           </div>
         </form>

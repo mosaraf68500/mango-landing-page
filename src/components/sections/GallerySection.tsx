@@ -11,12 +11,12 @@ export default function GallerySection({
   products,
 }: GallerySectionProps): React.JSX.Element {
   return (
-    <section id="products" className="bg-white px-4 py-10">
+    <section id="products" className="bg-white px-4 py-10" aria-labelledby="gallery-heading">
       <div className="mx-auto max-w-6xl space-y-6">
-        <SectionBanner>এক নজরে আমাদের আমগুলো</SectionBanner>
+        <SectionBanner id="gallery-heading">এক নজরে আমাদের আমগুলো</SectionBanner>
 
         {products.length === 0 ? (
-          <p className="rounded-xl bg-orange-50 px-4 py-10 text-center text-slate-600">
+          <p className="rounded-xl bg-orange-50 px-4 py-10 text-center text-slate-700">
             এখনো কোনো আম যোগ করা হয়নি। শীঘ্রই নতুন আম আসছে।
           </p>
         ) : (
