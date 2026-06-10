@@ -52,6 +52,7 @@ export interface PlaceOrderPayload {
   shippingAddress: string;
   product: string;
   quantity: number;
+  source?: string;
   packageId?: string;
   paymentMethod: PaymentMethod;
   bkashNumber?: string;

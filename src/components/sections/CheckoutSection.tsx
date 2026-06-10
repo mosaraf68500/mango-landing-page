@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { ChevronDown, Lock, Minus, Plus } from 'lucide-react';
 import { placeOrder } from '@/lib/api';
 import {
+  LANDING_PAGE_SOURCE,
   SHIPPING_INSIDE_DHAKA,
   SHIPPING_OUTSIDE_DHAKA,
 } from '@/lib/constants';
@@ -119,6 +120,7 @@ export default function CheckoutSection({
           product: selectedProduct._id,
           quantity: getOrderQuantity(quantity, selectedPackageId),
           paymentMethod: payloadPaymentMethod,
+          source: LANDING_PAGE_SOURCE,
         };
 
         if (selectedPackageId) {

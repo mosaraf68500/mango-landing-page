@@ -4,6 +4,7 @@ import { useState, useTransition, type FormEvent } from 'react';
 import { Lock, Minus, Plus } from 'lucide-react';
 import { placeOrder } from '@/lib/api';
 import {
+  LANDING_PAGE_SOURCE,
   SHIPPING_INSIDE_DHAKA,
   SHIPPING_OUTSIDE_DHAKA,
 } from '@/lib/constants';
@@ -96,6 +97,7 @@ export default function ProductOrderForm({
           product: product._id,
           quantity: getOrderQuantity(quantity, selectedPackageId),
           paymentMethod: payloadPaymentMethod,
+          source: LANDING_PAGE_SOURCE,
         };
 
         if (selectedPackageId) {
